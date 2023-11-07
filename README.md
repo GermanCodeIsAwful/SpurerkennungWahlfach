@@ -1,4 +1,4 @@
-# SpurerkennungWhalfach
+# SpurerkennungWahlfach
 Bei diesem Projekt handelt es sich um eine Prüfungsleistung für den Kurs Digitale Bildverarbeitung an der 
 Dualen Hochschule Baden-Württemberg. 
 Weitere Informationen zu den Anforderungen finden Sie unter [Aufgabe.pdf](aufgabe.pdf).
