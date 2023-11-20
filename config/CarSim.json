@@ -1,0 +1,15 @@
+{
+  "SLIDINGWINDOWS":{
+    "ROI_TL": [160, 180],
+    "ROI_TR": [480, 180],
+    "ROI_BL": [-140, 290],
+    "ROI_BR": [760, 290],
+    "GRAY_MIN_THRESHOLD": 200,
+    "GRAY_MAX_THRESHOLD": 255,
+    "HSV_MIN_THRESHOLD": [0, 50, 50],
+    "HSV_MAX_THRESHOLD": [90, 255, 255],
+    "WIDTH_ONESIDE": 100,
+    "COEFF_THRESHOLD": 0.001,
+    "SPLIT_LANE": false
+  }
+}

@@ -1,13 +1,15 @@
 {
   "SLIDINGWINDOWS":{
-    "ROI_TL": [260, 260],
-    "ROI_TR": [430, 260],
+    "ROI_TL": [270, 240],
+    "ROI_TR": [400, 240],
     "ROI_BL": [120, 345],
-    "ROI_BR": [540, 345],
-    "GRAY_MIN_THRESHOLD": 195,
+    "ROI_BR": [560, 345],
+    "GRAY_MIN_THRESHOLD": 190,
     "GRAY_MAX_THRESHOLD": 255,
     "HSV_MIN_THRESHOLD": [20, 40, 40],
     "HSV_MAX_THRESHOLD": [60, 255, 255],
-    "WIDTH_ONESIDE": 60
+    "WIDTH_ONESIDE": 90,
+    "COEFF_THRESHOLD": 0.001,
+    "SPLIT_LANE": true
   }
 }

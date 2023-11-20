@@ -3,14 +3,15 @@ import numpy as np
 import os
 import time
 import json
+import math
 
 from src import cameraCalibration, transformation, slidingWindows, programmeOutput
 
+
 class Main():
+    WIN_QHD = (640, 360)  # h mehrfaches von 40
 
-    WIN_QHD = (640, 360)    # h mehrfaches von 40
-
-    def __init__(self, config, videoPath, debug=False,):
+    def __init__(self, config, videoPath, debug=False):
 
         with open(config, 'r') as f:
             self.config = json.load(f)
@@ -21,16 +22,18 @@ class Main():
 
         self.calibration = cameraCalibration.cameraCalibration(debug=debug)
         self.transformation = transformation.transformation(debug=debug)
-        self.slidingWindows = slidingWindows.slidingWindows(debug=debug, config=self.config["SLIDINGWINDOWS"])
+        self.slidingWindows = slidingWindows.slidingWindows(debug=debug, config=self.config["SLIDINGWINDOWS"], resolution=self.WIN_QHD)
         self.output = programmeOutput.output(debug=debug)
 
-
+        self.fps_counter = 0
+        self.fps = 'wait'  # für ersten ~6 Frames sekunden
 
     def loadMp4(self):
 
+        print('mit "q" das Video abbrechen')
+
         video = cv.VideoCapture(self.videoPath)
-        prevFrameTime = 0
-        newFrameTime = 0
+        prevFrameTime = time.time()
         font = cv.FONT_HERSHEY_SIMPLEX
 
         while (video.isOpened()):
@@ -42,7 +45,10 @@ class Main():
             # ------------ execute features here ------------
 
             frame = cv.resize(frame, self.WIN_QHD)
-            left_points_original, right_points_original = self.slidingWindows.start(frame)
+
+            left_points_original, right_points_original, _ = self.slidingWindows.start(frame)
+
+            left_points_original, right_points_original = left_points_original.astype(np.int32), right_points_original.astype(np.int32)
 
             if self.debug:
                 cv.circle(frame, self.config["SLIDINGWINDOWS"]["ROI_TL"], 3, (0, 0, 255), -1)
@@ -52,11 +58,10 @@ class Main():
 
             # ------------ done -> fps ------------
 
-            newFrameTime = time.time()
-            fps = self._calcFps(newFrameTime, prevFrameTime)
-            prevFrameTime = newFrameTime
+            if self._calcFps(time.time(), prevFrameTime):
+                prevFrameTime = time.time()
 
-            cv.putText(frame, fps, (5, 50), font, 2, (255, 255, 255), 4, cv.LINE_AA)
+            cv.putText(frame, self.fps, (5, 50), font, 2, (255, 255, 255), 4, cv.LINE_AA)
 
             cv.polylines(frame, left_points_original, isClosed=False, color=(255, 0, 0), thickness=2)
             cv.polylines(frame, right_points_original, isClosed=False, color=(0, 255, 0), thickness=2)
@@ -75,17 +80,26 @@ class Main():
         https://www.geeksforgeeks.org/python-displaying-real-time-fps-at-which-webcam-video-file-is-processed-using-opencv/
         '''
 
-        fps = 1 / (newFrameTime - prevFrameTime)
-        fps = str(int(fps))
+        self.fps_counter += 1
 
-        return fps
+        if (newFrameTime - prevFrameTime) > 0.25:  # avg. über 0.25 sec
+            fps = math.ceil(self.fps_counter / (newFrameTime - prevFrameTime))
+            self.fps_counter = 0
+            fps = str(fps)
+
+            self.fps = fps
+
+            return True
+
+        else:
+            return False
+
 
 if __name__ == '__main__':
-
     main = Main("config/video.json", "img/Udacity/project_video.mp4", True)
     main_harder = Main("config/video_harder.json", "img/Udacity/challenge_video.mp4", True)
     main_harder_c = Main("config/video_harder_challenge.json", "img/Udacity/harder_challenge_video.mp4", True)
 
-    main.loadMp4()
-    #main_harder.loadMp4()
+    #main.loadMp4()
+    main_harder.loadMp4()
     #main_harder_c.loadMp4()

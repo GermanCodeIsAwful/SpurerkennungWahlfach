@@ -8,6 +8,8 @@
     "GRAY_MAX_THRESHOLD": 250,
     "HSV_MIN_THRESHOLD": [0, 30, 30],
     "HSV_MAX_THRESHOLD": [60, 255, 255],
-    "WIDTH_ONESIDE": 50
+    "WIDTH_ONESIDE": 80,
+    "COEFF_THRESHOLD": 0.001,
+    "SPLIT_LANE": false
   }
 }
