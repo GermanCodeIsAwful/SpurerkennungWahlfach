@@ -20,7 +20,8 @@ class Main():
 
         # Define Features
 
-        self.calibration = cameraCalibration.cameraCalibration(debug=debug)
+        self.calibration = cameraCalibration.cameraCalibration(path_calib='img/Udacity/calib', inner_row=9,
+                                                               inner_coll=6, debug=debug, resolution=self.WIN_QHD)
         self.transformation = transformation.transformation(debug=debug)
         self.slidingWindows = slidingWindows.slidingWindows(debug=debug, config=self.config["SLIDINGWINDOWS"], resolution=self.WIN_QHD)
         self.output = programmeOutput.output(debug=debug)
@@ -45,6 +46,11 @@ class Main():
             # ------------ execute features here ------------
 
             frame = cv.resize(frame, self.WIN_QHD)
+
+            if self.debug:
+                cv.imshow('raw', frame)
+
+            frame = self.calibration.get_calib_img(frame)
 
             left_points_original, right_points_original, _ = self.slidingWindows.start(frame)
 
