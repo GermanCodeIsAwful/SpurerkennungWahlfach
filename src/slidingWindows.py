@@ -1,13 +1,9 @@
 import cv2 as cv
 import numpy as np
 import warnings
-import os
-import time
-import json
-from matplotlib import pyplot as plt
 
 
-class slidingWindows():
+class SlidingWindows:
     '''
     https://www.youtube.com/watch?v=ApYo6tXcjjQ
     https://github.com/mithi/advanced-lane-detection/blob/master/curves.py
@@ -25,11 +21,10 @@ class slidingWindows():
         self.w = resolution[0]
         self.h = resolution[1]
         self.perspectiveMatrix, self.invPerspectiveMatrix = self._gen_matrix()
-        self.ploty = np.linspace(0, self.h, int(self.h/4))
+        self.ploty = np.linspace(0, self.h, int(self.h / 4))
         self.prev_left_lane_coeff = []
         self.prev_right_lane_coeff = []
         self.split_value = 0.65 if self.config["SPLIT_LANE"] else 0.5
-
 
         self.test = []
 
@@ -82,11 +77,11 @@ class slidingWindows():
 
             # Identify the nonzero pixels in x and y within the window
             good_left_inds = \
-            ((nonzeroy >= boxStartY - self.BOX_HEIGHT) & (nonzeroy < boxStartY) & (nonzerox >= win_xleft_low) & (
-                    nonzerox < win_xleft_high)).nonzero()[0]
+                ((nonzeroy >= boxStartY - self.BOX_HEIGHT) & (nonzeroy < boxStartY) & (nonzerox >= win_xleft_low) & (
+                        nonzerox < win_xleft_high)).nonzero()[0]
             good_right_inds = \
-            ((nonzeroy >= boxStartY - self.BOX_HEIGHT) & (nonzeroy < boxStartY) & (nonzerox >= win_xright_low) & (
-                    nonzerox < win_xright_high)).nonzero()[0]
+                ((nonzeroy >= boxStartY - self.BOX_HEIGHT) & (nonzeroy < boxStartY) & (nonzerox >= win_xright_low) & (
+                        nonzerox < win_xright_high)).nonzero()[0]
 
             # Append these indices to the lists
             leftPositionsBox.append(good_left_inds)
@@ -102,7 +97,6 @@ class slidingWindows():
 
         leftPositionsBox = np.concatenate(leftPositionsBox)
         rightPositionsBox = np.concatenate(rightPositionsBox)
-
 
         # back transformation from roi and polyfit
 
@@ -124,18 +118,20 @@ class slidingWindows():
             cv.imshow('Sliding Windows', debug_mask)
 
             if leftPositionsBox.any():
-                left_points_birdseye = cv.perspectiveTransform(left_points_original, self.perspectiveMatrix).astype(np.int32)
+                left_points_birdseye = cv.perspectiveTransform(left_points_original, self.perspectiveMatrix).astype(
+                    np.int32)
                 cv.polylines(frame, left_points_birdseye, isClosed=False, color=(255, 0, 0), thickness=8)
 
             if rightPositionsBox.any():
-                right_points_birdseye = cv.perspectiveTransform(right_points_original, self.perspectiveMatrix).astype(np.int32)
+                right_points_birdseye = cv.perspectiveTransform(right_points_original, self.perspectiveMatrix).astype(
+                    np.int32)
                 cv.polylines(frame, right_points_birdseye, isClosed=False, color=(0, 255, 0), thickness=8)
 
             cv.imshow('polyfit', frame)
 
         # return
         return (left_points_original, right_points_original,
-                self._transform_points(self.prev_left_lane_coeff*0.5 + self.prev_right_lane_coeff*0.5))
+                self._transform_points(self.prev_left_lane_coeff * 0.5 + self.prev_right_lane_coeff * 0.5))
 
     def _gen_matrix(self):
         inputPoints = np.float32(
@@ -167,7 +163,7 @@ class slidingWindows():
 
                 coefficients = prev_lane_coeff
             else:
-                coefficients[0] = coefficients[0]*0.9 + prev_lane_coeff[0]*0.1
+                coefficients[0] = coefficients[0] * 0.9 + prev_lane_coeff[0] * 0.1
 
         setattr(self, 'prev_left_lane_coeff' if leftorright else 'prev_right_lane_coeff', coefficients)
 

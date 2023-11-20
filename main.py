@@ -1,17 +1,18 @@
 import cv2 as cv
 import numpy as np
-import os
 import time
 import json
 import math
 
-from src import cameraCalibration, transformation, slidingWindows, programmeOutput
+from src import cameraCalibration, slidingWindows
 
 
-class Main():
+class Main:
     WIN_QHD = (640, 360)  # h mehrfaches von 40
 
     def __init__(self, config, videoPath, debug=False):
+
+        print('starting init ...')
 
         with open(config, 'r') as f:
             self.config = json.load(f)
@@ -20,14 +21,15 @@ class Main():
 
         # Define Features
 
-        self.calibration = cameraCalibration.cameraCalibration(path_calib='img/Udacity/calib', inner_row=9,
+        self.calibration = cameraCalibration.CameraCalibration(path_calib='img/Udacity/calib', inner_row=9,
                                                                inner_coll=6, debug=debug, resolution=self.WIN_QHD)
-        self.transformation = transformation.transformation(debug=debug)
-        self.slidingWindows = slidingWindows.slidingWindows(debug=debug, config=self.config["SLIDINGWINDOWS"], resolution=self.WIN_QHD)
-        self.output = programmeOutput.output(debug=debug)
+        self.slidingWindows = slidingWindows.SlidingWindows(debug=debug, config=self.config["SLIDINGWINDOWS"],
+                                                            resolution=self.WIN_QHD)
 
         self.fps_counter = 0
         self.fps = 'wait'  # für ersten ~6 Frames sekunden
+
+        print('done init')
 
     def loadMp4(self):
 
@@ -54,7 +56,8 @@ class Main():
 
             left_points_original, right_points_original, _ = self.slidingWindows.start(frame)
 
-            left_points_original, right_points_original = left_points_original.astype(np.int32), right_points_original.astype(np.int32)
+            left_points_original, right_points_original = left_points_original.astype(
+                np.int32), right_points_original.astype(np.int32)
 
             if self.debug:
                 cv.circle(frame, self.config["SLIDINGWINDOWS"]["ROI_TL"], 3, (0, 0, 255), -1)
@@ -102,10 +105,20 @@ class Main():
 
 
 if __name__ == '__main__':
-    main = Main("config/video.json", "img/Udacity/project_video.mp4", True)
-    main_harder = Main("config/video_harder.json", "img/Udacity/challenge_video.mp4", True)
-    main_harder_c = Main("config/video_harder_challenge.json", "img/Udacity/harder_challenge_video.mp4", True)
+    mode = '1'#input('Welches Video soll abgespielt werden (1,2,3)?:')
 
-    #main.loadMp4()
-    main_harder.loadMp4()
-    #main_harder_c.loadMp4()
+    if mode == '1':
+        main = Main("config/video.json", "img/Udacity/project_video.mp4", False)
+        main.loadMp4()
+
+    elif mode == '2':
+        main_harder = Main("config/video_harder.json", "img/Udacity/challenge_video.mp4", True)
+        main_harder.loadMp4()
+
+    elif mode == '3':
+        main_harder_c = Main("config/video_harder_challenge.json",
+                             "img/Udacity/harder_challenge_video.mp4", True)
+        main_harder_c.loadMp4()
+
+    else:
+        print('Bitte wählen Sie "1", "2" oder "3"')

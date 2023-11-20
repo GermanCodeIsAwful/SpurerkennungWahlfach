@@ -5,7 +5,7 @@ import sys
 import warnings
 
 sys.path.append('../src')
-from slidingWindows import slidingWindows  # TODO: relative import NO GOOD IHHHHHHH PEP8 IS CRYING
+from slidingWindows import SlidingWindows  # TODO: relative import NO GOOD IHHHHHHH PEP8 IS CRYING
 
 import cv2 as cv
 import numpy as np
@@ -28,7 +28,7 @@ class Student:
             self.config = json.load(f)
 
         self.debug = debug
-        self.slidingWindows = slidingWindows(debug=debug, config=self.config["SLIDINGWINDOWS"],
+        self.slidingWindows = SlidingWindows(debug=debug, config=self.config["SLIDINGWINDOWS"],
                                              resolution=self.WIN_QHD)
 
     def find_lines(self, img):

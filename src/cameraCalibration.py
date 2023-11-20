@@ -4,12 +4,12 @@ import os
 import matplotlib.pyplot as plt
 
 
-class cameraCalibration():
+class CameraCalibration:
 
     def __init__(self, path_calib, inner_row, inner_coll, debug, resolution):
         self.debug = debug
-        self._get_camera_calibration(path_calib, inner_row, inner_coll)
         self.resolution = resolution
+        self._get_camera_calibration(path_calib, inner_row, inner_coll)
 
     def _show(self, img):
         plt.close()
@@ -36,20 +36,17 @@ class cameraCalibration():
                 imgpoints.append(corners2)
                 cv.drawChessboardCorners(img, (inner_row, inner_coll), corners2, retval)
 
-        ret, mtx, dist, _, _ = cv.calibrateCamera(objpoints, imgpoints, img_gray.shape[::-1], None, None)
+        ret, mtx, dist, _, _ = cv.calibrateCamera(objpoints, imgpoints, img_gray.shape[::-1],
+                                                  None, None)
 
         self.mtx = mtx
         self.dist = dist
+        self.newcameramtx, self.roi = cv.getOptimalNewCameraMatrix(self.mtx, self.dist, self.resolution,
+                                                                   1, self.resolution)
 
     def get_calib_img(self, img):
-        h, w = img.shape[:2]
-        newcameramtx, roi = cv.getOptimalNewCameraMatrix(self.mtx, self.dist, (w, h), 1, (w, h))
-        dst = cv.undistort(img, self.mtx, self.dist, None, newcameramtx)
+        dst = cv.undistort(img, self.mtx, self.dist, None, self.newcameramtx)
         # crop the image
-        x, y, w, h = roi
+        x, y, w, h = self.roi
         frame = cv.resize(dst[y:y + h, x:x + w], self.resolution)
         return frame
-
-##Anwendung:
-# Initialisierung: ret, mtx, dist, rvecs, tvecs = get_camera_calibration(path_calib,inner_row,inner_coll)
-# Pro Frame new_img = get_calib_img(img,mtx,dist)

@@ -1,14 +1,14 @@
 {
   "SLIDINGWINDOWS":{
-    "ROI_TL": [270, 240],
-    "ROI_TR": [400, 240],
-    "ROI_BL": [120, 345],
-    "ROI_BR": [560, 345],
-    "GRAY_MIN_THRESHOLD": 190,
+    "ROI_TL": [300, 245],
+    "ROI_TR": [410, 245],
+    "ROI_BL": [140, 350],
+    "ROI_BR": [590, 350],
+    "GRAY_MIN_THRESHOLD": 185,
     "GRAY_MAX_THRESHOLD": 255,
-    "HSV_MIN_THRESHOLD": [20, 40, 40],
+    "HSV_MIN_THRESHOLD": [15, 35, 35],
     "HSV_MAX_THRESHOLD": [60, 255, 255],
-    "WIDTH_ONESIDE": 90,
+    "WIDTH_ONESIDE":80,
     "COEFF_THRESHOLD": 0.001,
     "SPLIT_LANE": true
   }
