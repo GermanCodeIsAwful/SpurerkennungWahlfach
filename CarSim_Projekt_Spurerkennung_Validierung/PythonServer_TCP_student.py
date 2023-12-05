@@ -2,7 +2,6 @@ import PythonServer_Comms_TCP as TCP
 import time
 import cv2
 import numpy as np
-import matplotlib.pyplot as plt
 import PythonLaneLines_student
 
 
@@ -68,7 +67,7 @@ while True:
                     # analyze image for lane lines
                     # --> TODO: implement your code here
 
-                    img_student, mittel_line, radius, pos = student_lane.find_lines(img_decoded)
+                    img_student, mittel_line, radius, pos, distance = student_lane.find_lines(img_decoded)
 
                     p2, p1, p0 = mittel_line
 
@@ -82,7 +81,7 @@ while True:
                     # send acknowledgement
                     #sock.SendData(str(len(img)) + ';' + str(p0) + ';' + str(p1) + ';' + str(p2) + ';' + str(radius) + ';' + str(pos))
                     sock.SendData(
-                        str(len(img)) + ';' + str(p0) + ';' + str(p1) + ';' + str(p2) + ';' + str(0) + ';' + str(0))
+                        str(len(img_student)) + ';' + str(p0) + ';' + str(p1) + ';' + str(p2) + ';' + str(radius) + ';' + str(distance))
 
                 else:
                     print("Skip frame " + str(i) + " since it was not transferred correctly")                    

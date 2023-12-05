@@ -7,9 +7,6 @@ class SlidingWindows:
     '''
     https://www.youtube.com/watch?v=ApYo6tXcjjQ
     https://github.com/mithi/advanced-lane-detection/blob/master/curves.py
-    TODO: Krümmung der Fahrspur
-    TODO: Abstand zur Mitte
-    TODO: POLYNOM ÜBERPRÜFEN
     '''
 
     BOX_HEIGHT = 40

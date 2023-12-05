@@ -105,10 +105,10 @@ class Main:
 
 
 if __name__ == '__main__':
-    mode = '1'#input('Welches Video soll abgespielt werden (1,2,3)?:')
+    mode = input('Welches Video soll abgespielt werden (1,2,3)?:')
 
     if mode == '1':
-        main = Main("config/video.json", "img/Udacity/project_video.mp4", False)
+        main = Main("config/video.json", "img/Udacity/project_video.mp4", True)
         main.loadMp4()
 
     elif mode == '2':
