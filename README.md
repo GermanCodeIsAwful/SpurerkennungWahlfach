@@ -57,6 +57,8 @@ Wir haben uns für folgende Bonusaufgaben entschieden:
 - CarSim  
 - Objekte im Bild
 
+![img_1.png](doc/img/img_1.png)
+
 
 - (harder_challenge_video)
 

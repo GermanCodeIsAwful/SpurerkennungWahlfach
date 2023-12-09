@@ -4,13 +4,13 @@ import time
 import json
 import math
 
-from src import cameraCalibration, slidingWindows
+from src import cameraCalibration, slidingWindows,objectDetection_Y8
 
 
 class Main:
     WIN_QHD = (640, 360)  # h mehrfaches von 40
 
-    def __init__(self, config, videoPath, debug=False):
+    def __init__(self, config, videoPath, debug=False, objectDetection = True):
 
         print('starting init ...')
 
@@ -18,6 +18,7 @@ class Main:
             self.config = json.load(f)
         self.debug = debug
         self.videoPath = videoPath
+        self.activateobjectdetection = objectDetection
 
         # Define Features
 
@@ -25,7 +26,8 @@ class Main:
                                                                inner_coll=6, debug=debug, resolution=self.WIN_QHD)
         self.slidingWindows = slidingWindows.SlidingWindows(debug=debug, config=self.config["SLIDINGWINDOWS"],
                                                             resolution=self.WIN_QHD)
-
+        if self.activateobjectdetection:
+            self.objectDetection = objectDetection_Y8.ObjectDetection(True)
         self.fps_counter = 0
         self.fps = 'wait'  # für ersten ~6 Frames sekunden
 
@@ -53,6 +55,8 @@ class Main:
                 cv.imshow('raw', frame)
 
             frame = self.calibration.get_calib_img(frame)
+            if self.activateobjectdetection:
+                results = self.objectDetection.get_objects(frame)
 
             left_points_original, right_points_original, _ = self.slidingWindows.start(frame)
 
@@ -74,6 +78,9 @@ class Main:
 
             cv.polylines(frame, left_points_original, isClosed=False, color=(255, 0, 0), thickness=2)
             cv.polylines(frame, right_points_original, isClosed=False, color=(0, 255, 0), thickness=2)
+
+            if self.activateobjectdetection:
+                frame = self.objectDetection.draw_boxes_cv2(frame,results)
 
             cv.imshow('Video', frame)
 
