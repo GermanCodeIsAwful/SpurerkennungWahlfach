@@ -53,7 +53,7 @@ Dies ist die Hauptfunktion der Klasse und startet die Videoanalyse in den folgen
 4. Anzeige und Ausgabe von Bildinformationen
 
 ```python
-    def loadMp4(self):
+        def loadMp4(self):
 
         print('mit "q" das Video abbrechen')
 
@@ -75,6 +75,8 @@ Dies ist die Hauptfunktion der Klasse und startet die Videoanalyse in den folgen
                 cv.imshow('raw', frame)
 
             frame = self.calibration.get_calib_img(frame)
+            if self.activateobjectdetection:
+                results = self.objectDetection.get_objects(frame)
 
             left_points_original, right_points_original, _ = self.slidingWindows.start(frame)
 
@@ -96,6 +98,9 @@ Dies ist die Hauptfunktion der Klasse und startet die Videoanalyse in den folgen
 
             cv.polylines(frame, left_points_original, isClosed=False, color=(255, 0, 0), thickness=2)
             cv.polylines(frame, right_points_original, isClosed=False, color=(0, 255, 0), thickness=2)
+
+            if self.activateobjectdetection:
+                frame = self.objectDetection.draw_boxes_cv2(frame, results)
 
             cv.imshow('Video', frame)
 

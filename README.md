@@ -32,7 +32,7 @@ Weitere Informationen zu den Anforderungen finden Sie unter [Aufgabe.pdf](aufgab
 
 Als wir uns mit dieser Aufgabe beschäftigt hatten, haben wir eine wissenschaftliche Recherche durchgeführt.
 Dabei sind wir unter anderem auf den Artikel "An Efficient Lane Line Detection Method Based on Computer Vision" (Quelle: 1).
-Wir haben uns für den Sliding Window Ansatz entschieden, anstatt der in der Vorlesung vorgestellten Methoden,
+Wir haben uns für den Sliding Window Ansatz entschieden, anstatt der in der Vorlesung vorgestellten Methoden (Hough Transformation,... ),
 da dieser Ansatz vielversprechender bei der Variation der Bildeinstellung ist.
 
 1. Größenänderung und Transformieren
@@ -55,10 +55,9 @@ Wir haben uns für folgende Bonusaufgaben entschieden:
 
 - challenge_video  
 - CarSim  
-- Objekte im Bild
+- Objekte im Bild (funktioniert sehr gut, bedeutet aber auch einen starken Rückgang der FPS)
 
-![img_1.png](doc/img/img_1.png)
-
+![img_1.png](doc/img/objectDetection.png)
 
 - (harder_challenge_video)
 
@@ -66,14 +65,14 @@ Wir haben uns für folgende Bonusaufgaben entschieden:
 
 Die [Ergebnisse](doc/vid) werden im folgenden Kapitel erörtert.
 
-### Viedeo (99.999%) 
+### Viedeo (99.9999%) 
 
 Das Hauptvideo der Aufgabe wird bis auf ein oder zwei Frames vollständig erkannt
 und das Polynom wird korrekt berechnet.
 Bei dieser Aufgabe wurden keine Straßenbahnprobleme gefunden, 
 auch die hellen Bereiche werden im Thershold herausgefiltert.
 
-### Challenge Viedeo (98%)
+### Challenge Viedeo (99%)
 
 Das zweite Video wurde bis auf eine Stelle vollständig erkannt. 
 Es gibt einen Bereich relativ am Anfang, wo unter einer Brücke gefahren wird. 
@@ -126,6 +125,9 @@ Um die Leistung und Effizienz des Programmes zu verbessern, haben wir folgende M
 - Unnötige Berechnungen vermeiden: 
   - Minimierung wiederholter oder unnötiger Berechnungen durch Speicherung oder Vorberechnung von Zwischenergebnissen.
 
+- Canny Edge Detection!!!!:
+  - Ermöglicht es, die für die Berechnung benötigten Punkte zu reduzieren.
+
 - Parallelisierung oder Multithreading: 
   - Wo möglich und sinnvoll, können parallele Verarbeitungstechniken eingesetzt werden, um die Verarbeitungszeit des Sliding Window zu reduzieren.
 
@@ -137,6 +139,12 @@ Sliding Window wird jedoch als empirisch sehr gut angesehen.
 
 ## Quellen
 
-[1:iopscience](https://iopscience.iop.org/article/10.1088/1742-6596/1802/3/032006/pdf)
+[1:iopscience](https://iopscience.iop.org/article/10.1088/1742-6596/1802/3/032006/pdf)  
+[2:medium](https://medium.com/analytics-vidhya/building-a-lane-detection-system-f7a727c6694)  
+[3:medium](https://medium.com/@mrhwick/simple-lane-detection-with-opencv-bfeb6ae54ec0)  
+[4:kushalbkusram](https://kushalbkusram.medium.com/advanced-lane-detection-fd39572cfe91)  
+[5:srianumakonda](https://srianumakonda.medium.com/pairing-lane-detection-with-object-detection-665b30462952)
 
-Weitere Codequellen sind meist direkt im Code angegeben.
+Weitere Codequellen sind direkt im Code angegeben.
+
+## [Repo](https://github.com/GermanCodeIsAwful/SpurerkennungWahlfach)

@@ -10,7 +10,7 @@ from src import cameraCalibration, slidingWindows,objectDetection_Y8
 class Main:
     WIN_QHD = (640, 360)  # h mehrfaches von 40
 
-    def __init__(self, config, videoPath, debug=False, objectDetection = True):
+    def __init__(self, config, videoPath, debug=False, objectDetection=False):
 
         print('starting init ...')
 
@@ -80,7 +80,7 @@ class Main:
             cv.polylines(frame, right_points_original, isClosed=False, color=(0, 255, 0), thickness=2)
 
             if self.activateobjectdetection:
-                frame = self.objectDetection.draw_boxes_cv2(frame,results)
+                frame = self.objectDetection.draw_boxes_cv2(frame, results)
 
             cv.imshow('Video', frame)
 
@@ -115,16 +115,16 @@ if __name__ == '__main__':
     mode = input('Welches Video soll abgespielt werden (1,2,3)?:')
 
     if mode == '1':
-        main = Main("config/video.json", "img/Udacity/project_video.mp4", True)
+        main = Main("config/video.json", "img/Udacity/project_video.mp4", False, True)
         main.loadMp4()
 
     elif mode == '2':
-        main_harder = Main("config/video_harder.json", "img/Udacity/challenge_video.mp4", True)
+        main_harder = Main("config/video_harder.json", "img/Udacity/challenge_video.mp4", True, False)
         main_harder.loadMp4()
 
     elif mode == '3':
         main_harder_c = Main("config/video_harder_challenge.json",
-                             "img/Udacity/harder_challenge_video.mp4", True)
+                             "img/Udacity/harder_challenge_video.mp4", True, False)
         main_harder_c.loadMp4()
 
     else:
