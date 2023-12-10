@@ -2,9 +2,13 @@
 
 ## Funktionsweise
 
+Zu Beginn des Progreammes wird einmalig die Kalibirierungsmatrix berechnet und gespeichert.
+
+Während das Programm läuft wird diese Matrix auf jeden Frame angerechnet.
+
 ## Code
 
-```python 
+```python
 class cameraCalibration():
     '''
     TODO:   Entzerrung des input
@@ -20,6 +24,11 @@ class cameraCalibration():
         plt.figure()
         plt.imshow(img)
         plt.show()
+```
+
+In diesem Teil wird die Klasse initialisiert und die Debug Funktion _show definiert. Diese ist lediglich dazu da, um ein Bild anzuzeigen. Im normalen Betrieb wird diese allerdings nicht verwendet. 
+
+```python
         
     def _get_camera_calibration(self, path_calib, inner_row, inner_coll):
         criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 30, 0.001)
@@ -47,7 +56,12 @@ class cameraCalibration():
 
         self.mtx = mtx
         self.dist = dist
+```
+In diesem Abschnitt wird die Kamerakalibrierungsmatrix mit dem in der Vorlesung vogestellten Prinzip berechnet und gespeichert.
 
+
+
+```python
     def get_calib_img(self, img):
         h, w = img.shape[:2]
         newcameramtx, roi = cv.getOptimalNewCameraMatrix(self.mtx, self.dist, (w, h), 1, (w, h))
@@ -63,3 +77,8 @@ class cameraCalibration():
 
 
 ```
+
+In dieser Funktion wird die eben berechnete Kalibrierungsmatrix auf ein Bild angewandt und gibt das kalibrierte Bild zurück.
+Anders als in der Vorlesung gezeigt, wird hier das Bild auf die Eingangsgröße zurück kalibriert.
+
+Somit sind keine schwarzen Ränder auf dem Bild zu sehen.
